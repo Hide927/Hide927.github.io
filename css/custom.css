@@ -1,0 +1,37 @@
+.wl-comment {
+  max-width: 780px;
+  margin: auto;
+}
+.wl-meta-head {
+  max-width: 780px;
+  margin: auto;
+}
+.wl-empty {
+  max-width: 780px;
+  margin: auto;
+}
+.wl-cards .wl-item {
+  max-width: 780px;
+  margin: auto;
+}
+.wl-card-item {
+  max-width: 780px;
+  margin: auto;
+}
+.wl-power {
+  max-width: 780px;
+  margin: auto;
+}
+.footer {
+  height: 3rem;
+  line-height: 1.5rem;
+}
+.dark-theme .post-content figure,
+.dark-theme .post-content figure.highlight .code pre {
+  background-color: #444;
+  color: #ccc;
+}
+.dark-theme .post-content figure.highlight .gutter pre {
+  background-color: #444;
+  color: #ccc;
+}

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="default">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WzZH">
+
+
+
+
+
+<title>鸡汤文学 &amp; 摆烂文学 | WzZH&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140887.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    
+    <script src="/js/codecopy.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">WzZH&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">WzZH&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;浅色</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">全部展开</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">前往底部</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? '全部展开' : '全部折叠';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">鸡汤文学 &amp; 摆烂文学</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                            <i class="iconfont icon-calendar "></i>&nbsp;发表于: <a href="#">2022-07-13</a>
+                        </span>
+                    
+                    
+                        <span class="post-updated">
+                            <i class="iconfont icon-calendar-check-fill "></i>&nbsp;更新于: <a href="#">2022-12-29</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                            <i class="iconfont icon-folder "></i>&nbsp;分类于: 
+                            
+                                <a href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+                            
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-file-word "></i>&nbsp;总字数: 
+                            <a href="#">1.2k</a>
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-time "></i>&nbsp;约需要: 
+                            <a href="#">2 分钟</a>
+                        </span>
+                    
+                    
+                        <span class="post-view">
+                            <i class="iconfont icon-icon- "></i>&nbsp;浏览量: 
+                            <a class="busuanzi-value" id="busuanzi_value_page_pv"></a>
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>文案收集，持续更新……</p>
+<h2 id="鸡汤文学"><a href="#鸡汤文学" class="headerlink" title="鸡汤文学"></a>鸡汤文学</h2><blockquote>
+<p><strong>与君共勉</strong></p>
+</blockquote>
+<ul>
+<li>世界上只有一种真正的英雄主义，那就是看清生活的真相之后，依然热爱生活。</li>
+<li>人在很年轻的时候，对人生的际遇会有种近乎盲目的乐观，以为我们和他人的相遇、交谈、心有灵犀、火花四射，在漫长的人生中可以发生很多次，所以我们如此轻视别离。直到很后来才明白，似那般流光溢彩、相顾俨然的时刻，一辈子能遇到一回，已经要感谢命运。</li>
+<li>弃我去者，昨日之日不可留。乱我心者，今日之日多烦忧。</li>
+<li>知不可乎骤得，托遗响于悲风。</li>
+<li>失之东隅，收之桑榆。东隅已逝，桑榆非晚。</li>
+<li>人不可能每一步都正确，永远不要站在现在的高度去批判当时的自己。</li>
+<li>务必请你，一而再，再而三，三而不竭，千次万次，毫不犹豫地，救自己于这世间水火。</li>
+<li>且行且看且从容，且停且忘且随风。</li>
+<li>我期许自己要活得更真实也更诚实，要更接受甚至喜欢自己身上起伏的每部分，才能更喜欢这世界。我希望自己懂得处理、欣赏各种欲求，各种人性的丑陋和美妙，找到和它们相处的最好方式。我要坦然地接受好与坏的这一切，我相信我生来就是高山而非溪流，我亦要在一个最好的状态下，爱与自己所有的事物。</li>
+<li>亲爱的小孩，你总会知道，前路泥泞，漫漫成长的路上布满荆棘，童话故事的糖纸外衣下是狰狞的现实，除了淤青的膝盖，世事人性的丑恶还会孕育出悲观的灵魂，总会有人扯开你遮面的帷帽，亲吻你被命运惹红的双眼。可是人生总是这样，不富足的荒原上人总是会先顾忌自己的温饱，你会辗转沉迷于相逢别离，也会有人站在你身前身后，陪你一起沉浮。</li>
+<li>在你最艰难的时候，别老想着太远的将来，只要鼓励自己过好今天就好。这世间有太多的猝不及防，有些东西，根本不配占有你的情绪。人生就是一场体验，请你尽兴吧。</li>
+<li>且视他人之疑目如盏盏鬼火,大胆地去走你的夜路。</li>
+<li>愿中国青年都摆脱冷气，只是向上走，不必听自暴自弃者流的话。能做事的做事，能发声的发声。有一分热，发一分光，就令萤火一般，也可以在黑暗里发一点光，不必等候炬火。此后如竟没有炬火，我便是唯一的光。</li>
+<li>纵使被说坏话被讨厌，也没什么好在意的，因为那是对方的课题。擅自背负别人的课题，只会让自己感到痛苦。</li>
+</ul>
+<h2 id="摆烂文学"><a href="#摆烂文学" class="headerlink" title="摆烂文学"></a>摆烂文学</h2><blockquote>
+<p><strong>每天一遍，焦虑再见</strong></p>
+</blockquote>
+<ul>
+<li>做事一定要三思而后行，能不能不做？能不能别人做？能不能晚点做？</li>
+<li>成功源自后天的努力，所以今明两天就安心玩吧。</li>
+<li>我第一天到文化馆上班时，故意迟到了 2 个小时，结果我发现，自己竟然是第一个来上班的，我心想这地方来对了。</li>
+<li>关我屁事？关你屁事？</li>
+<li>输在起跑线总比输在终点强，省了一顿跑。</li>
+<li>我今天摆烂、明天摆烂、天天摆烂，这不是自律是什么？</li>
+<li>每当想偷懒松懈的时候我就告诉自己，比我优秀的人都比我努力，那我努力有什么用？</li>
+<li>干嘛说我懒啊，我什么都没做啊。</li>
+<li>你想干什么？我想游手好闲。</li>
+<li>事已至此，先吃饭吧。</li>
+<li>不要因为睡懒觉而自责，就算起床也创造不了什么价值。</li>
+<li>机会是留给有准备的人，没有机会的，就别瞎准备了。</li>
+<li>明天能做的事，绝不今天做。</li>
+<li>与其埋怨自己，不如指责他人。</li>
+<li>对得起自己就好，剩下的就交给报应吧。</li>
+<li>你能在浪费时间中获得乐趣，就不算浪费时间。</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>本文作者:</span>
+                        <span>WzZH</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wangzihang.site/posts/884faa85.html">https://wangzihang.site/posts/884faa85.html</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>版权声明:</span>
+                        <span>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA-4.0</a> 许可协议。转载请注明出处。</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%96%87%E6%A1%88/"><i class="iconfont icon-24gf-tags "></i> 文案</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">首页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/posts/431f9085.html">博客图床方案</a>
+            
+            
+            <a class="next" rel="next" href="/posts/694166a.html">一些无病呻吟</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+
+    <div id="waline"></div>
+    <head>
+  <!-- ... -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+  />
+  <!-- ... -->
+</head>
+<body>
+  <!-- ... -->
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    init({
+      el: '#waline',
+      serverURL: 'https://comments.wangzihang.site/',
+      emoji: ['https://unpkg.com/@waline/emojis@1.1.0/weibo', 'https://unpkg.com/@waline/emojis@1.1.0/bilibili'],
+      dark: 'body.dark-theme',
+    });
+  </script>
+</body>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WzZH | 2021 - 2024
+            | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a><br>
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    <i class="iconfont icon-fangkeguanli "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_uv"></a>
+</span>
+
+
+<span class="site-pv">
+    <i class="iconfont icon-icon- "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_pv"></a>
+</span>
+
+            
+            
+                <span class="site-count">
+                 <i class="iconfont icon-file-word "></i>
+                    <a href="#">27k</a>
+                </span>
+            
+            
+                <span class="site-count">
+                <i class="iconfont icon-time "></i>
+                    <a href="#">45 分钟</a>
+                </span>
+            
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

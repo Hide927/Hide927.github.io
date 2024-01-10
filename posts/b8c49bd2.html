@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="default">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WzZH">
+
+
+
+
+
+<title>迁移 Win10 的 EFI 引导分区到固态硬盘 | WzZH&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140887.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    
+    <script src="/js/codecopy.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">WzZH&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">WzZH&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;浅色</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">全部展开</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">前往底部</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? '全部展开' : '全部折叠';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">迁移 Win10 的 EFI 引导分区到固态硬盘</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                            <i class="iconfont icon-calendar "></i>&nbsp;发表于: <a href="#">2022-08-19</a>
+                        </span>
+                    
+                    
+                        <span class="post-updated">
+                            <i class="iconfont icon-calendar-check-fill "></i>&nbsp;更新于: <a href="#">2022-10-24</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                            <i class="iconfont icon-folder "></i>&nbsp;分类于: 
+                            
+                                <a href="/categories/%E8%AE%B0%E5%BD%95/">记录</a>
+                            
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-file-word "></i>&nbsp;总字数: 
+                            <a href="#">1.5k</a>
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-time "></i>&nbsp;约需要: 
+                            <a href="#">2 分钟</a>
+                        </span>
+                    
+                    
+                        <span class="post-view">
+                            <i class="iconfont icon-icon- "></i>&nbsp;浏览量: 
+                            <a class="busuanzi-value" id="busuanzi_value_page_pv"></a>
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>个人笔记本电脑是固态硬盘 + 机械硬盘的组合，在磁盘管理中发现 Win10 系统安装在固态硬盘，但是 EFI 分区却安装在了机械硬盘，即启动时主板 UEFI 固件会先在机械硬盘找到 EFI 分区，EFI 引导程序再找到固态硬盘中的 Win10 进行启动，当机械硬盘移除或是出现故障的时候系统就会无法启动，因此考虑将 EFI 分区迁移到固态硬盘中。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>在磁盘管理中找到系统所在分区，右键压缩卷，<strong>大小需要大于原机械硬盘中 EFI 分区</strong>，此时固态硬盘中将出现一个未分配空间，这是之后安装 EFI 分区的位置。</li>
+<li>准备一个U盘创建 Win10 安装介质，进入 <a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/software-download/windows10">下载 Windows 10</a> 并按照官方流程进行。</li>
+</ol>
+<h2 id="EFI-分区迁移"><a href="#EFI-分区迁移" class="headerlink" title="EFI 分区迁移"></a>EFI 分区迁移</h2><ol>
+<li>插入U盘重启电脑，开机时不停按 <code>F2</code>（取决于电脑品牌）进入 BIOS，选择从U盘启动，会弹出窗口提示更新 Win10 系统，忽略此界面。按 <code>SHIFT + F10</code> 进入命令行。</li>
+<li>输入 <code>diskpart</code> 进入 DISKPART 命令。</li>
+<li>输入 <code>list disk</code> 列出磁盘，此时可以看到固态硬盘，机械硬盘和U盘，并且固态硬盘的可用空间应该是大于我们最开始压缩出来的空间。</li>
+<li>输入 <code>select disk #</code> 选择需要安装 EFI 分区的磁盘，这里也就是固态硬盘。<strong>注意：# 替换成磁盘编号，如 0&#x2F;1&#x2F;2。</strong></li>
+<li>输入 <code>create partition efi size = 400</code> 创建 EFI 分区，这里的 400 是最开始压缩出来的空间。</li>
+<li>输入 <code>format quick fs=fat32</code> 进行格式化。</li>
+<li>输入 <code>assign letter = s</code> 分配盘符，这里用 s 是为了避免和已有的盘符重复。</li>
+<li>输入 <code>list partition</code> 列出固态硬盘的所有分区，此时可以看到出现了一个 400 MB 的系统分区。</li>
+<li>输入 <code>list volume</code> 查看盘符，找到系统盘盘符（<strong>有可能不是 C</strong>）和 EFI 分区盘符（即我们分配的 S）。</li>
+<li>输入 <code>exit</code> 退出 DISKPART 命令。</li>
+<li>输入 <code>bcdboot X:\Windows /s S:</code> 将系统引导信息复制到 EFI 分区里，提示已成功创建启动文件则大功告成。<strong>注意：X 替换成系统盘盘符，S 代表我们上面分配的 EFI 分区盘符；Windows 前必须使用反斜杠否则会报错！</strong></li>
+<li>关闭命令行，拔掉U盘并重启，进入 BIOS 将固态硬盘设置为第一启动设备。</li>
+<li>进入磁盘管理中可以看到，固态硬盘中已经有了新建的 EFI 分区，机械硬盘中的 EFI 分区并未删除，但不会对系统启动造成影响了。</li>
+</ol>
+<h2 id="删除原机械硬盘中-EFI-分区（可选）"><a href="#删除原机械硬盘中-EFI-分区（可选）" class="headerlink" title="删除原机械硬盘中 EFI 分区（可选）"></a>删除原机械硬盘中 EFI 分区（可选）</h2><p>直接在磁盘管理中是无法删除 EFI 分区的，使用 DISKPART 命令 即可删除。</p>
+<ol>
+<li><code>Win + R</code> 输入 <code>cmd</code> 进入命令行。</li>
+<li>输入 <code>diskpart</code> 进入 DISKPART 命令。</li>
+<li>输入 <code>list disk</code> 列出磁盘，此时可以看到固态硬盘和机械硬盘。</li>
+<li>输入 <code>select disk #</code> 选择需要删除的 EFI 分区所在的磁盘，这里也就是机械硬盘。<strong>注意：# 替换成磁盘编号，如 0&#x2F;1&#x2F;2。</strong></li>
+<li>输入 <code>list partition</code> 列出机械硬盘的所有分区，此时可以看到存在一个需要删除的 EFI 分区（可根据大小和类型判断）。</li>
+<li>输入 <code>select partition #</code> 选择上述需要删除的 EFI 分区。<strong>注意：# 替换成分区编号，如 1&#x2F;2&#x2F;3。</strong></li>
+<li>输入 <code>SET ID=ebd0a0a2-b9e5-4433-87c0-68b6b72699c7</code> 将分区设置为基本数据分区。</li>
+<li>此时打开磁盘管理会发现之前的机械硬盘上的 EFI 分区已经变成了基本数据分区，右键即可删除卷。</li>
+</ol>
+<p>此方式同样可用于双系统情况下删除 Ubuntu 系统的 EFI 分区。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Sebastien23/article/details/99691881">迁移 win10 的 efi 引导分区到系统固态硬盘</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43852792/article/details/105409712">关于多硬盘电脑系统盘中没有 EFI 分区的解决方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://xiulian.blog.csdn.net/article/details/88726797">windows10 删除 EFI 分区（绝对安全）</a></li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>本文作者:</span>
+                        <span>WzZH</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wangzihang.site/posts/b8c49bd2.html">https://wangzihang.site/posts/b8c49bd2.html</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>版权声明:</span>
+                        <span>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA-4.0</a> 许可协议。转载请注明出处。</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Win10/"><i class="iconfont icon-24gf-tags "></i> Win10</a>
+                    
+                        <a href="/tags/EFI/"><i class="iconfont icon-24gf-tags "></i> EFI</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">首页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/posts/839cc492.html">变分自编码器 VAE</a>
+            
+            
+            <a class="next" rel="next" href="/posts/32d08eff.html">小镇做题家的自我修养</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+
+    <div id="waline"></div>
+    <head>
+  <!-- ... -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+  />
+  <!-- ... -->
+</head>
+<body>
+  <!-- ... -->
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    init({
+      el: '#waline',
+      serverURL: 'https://comments.wangzihang.site/',
+      emoji: ['https://unpkg.com/@waline/emojis@1.1.0/weibo', 'https://unpkg.com/@waline/emojis@1.1.0/bilibili'],
+      dark: 'body.dark-theme',
+    });
+  </script>
+</body>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WzZH | 2021 - 2024
+            | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a><br>
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    <i class="iconfont icon-fangkeguanli "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_uv"></a>
+</span>
+
+
+<span class="site-pv">
+    <i class="iconfont icon-icon- "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_pv"></a>
+</span>
+
+            
+            
+                <span class="site-count">
+                 <i class="iconfont icon-file-word "></i>
+                    <a href="#">27k</a>
+                </span>
+            
+            
+                <span class="site-count">
+                <i class="iconfont icon-time "></i>
+                    <a href="#">45 分钟</a>
+                </span>
+            
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

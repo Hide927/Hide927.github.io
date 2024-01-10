@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="default">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WzZH">
+
+
+
+
+
+<title>Hexo + GitHub Pages 博客搭建及美化 | WzZH&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140887.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    
+    <script src="/js/codecopy.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">WzZH&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">WzZH&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;浅色</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">全部展开</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">前往底部</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? '全部展开' : '全部折叠';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Hexo + GitHub Pages 博客搭建及美化</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                            <i class="iconfont icon-calendar "></i>&nbsp;发表于: <a href="#">2021-09-11</a>
+                        </span>
+                    
+                    
+                        <span class="post-updated">
+                            <i class="iconfont icon-calendar-check-fill "></i>&nbsp;更新于: <a href="#">2023-01-04</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                            <i class="iconfont icon-folder "></i>&nbsp;分类于: 
+                            
+                                <a href="/categories/%E8%AE%B0%E5%BD%95/">记录</a>
+                            
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-file-word "></i>&nbsp;总字数: 
+                            <a href="#">5.3k</a>
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-time "></i>&nbsp;约需要: 
+                            <a href="#">9 分钟</a>
+                        </span>
+                    
+                    
+                        <span class="post-view">
+                            <i class="iconfont icon-icon- "></i>&nbsp;浏览量: 
+                            <a class="busuanzi-value" id="busuanzi_value_page_pv"></a>
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>记录使用 Hexo 框架 + GitHub Pages 搭建个人博客并进行自定义美化相关的内容。</p>
+<h2 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h2><h3 id="安装-Git-和-Node-js"><a href="#安装-Git-和-Node-js" class="headerlink" title="安装 Git 和 Node.js"></a>安装 Git 和 Node.js</h3><p><a target="_blank" rel="noopener" href="https://git-scm.com/">Git 官网</a> 和 <a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn/">Node.js 官网</a> 下载对应版本进行安装。安装完成后 <code>Win+R</code> 输入 <code>cmd</code> 打开命令提示符，输入 <code>git --version</code> 验证 Git 是否安装成功；输入 <code>node -v</code> 和 <code>npm -v</code> 验证 Node.js 是否安装成功。</p>
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292137152.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292137152.png"></a></p>
+<h3 id="GitHub-新建仓库"><a href="#GitHub-新建仓库" class="headerlink" title="GitHub 新建仓库"></a>GitHub 新建仓库</h3><p>GitHub 新建仓库，仓库名为 <code>xxx.github.io</code>，亦即博客地址。<strong>注意：xxx 必须为 GitHub 用户名。</strong></p>
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292138357.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292138357.png"></a></p>
+<h3 id="配置-Git"><a href="#配置-Git" class="headerlink" title="配置 Git"></a>配置 Git</h3><p>即连接 Git 与 GitHub。任意位置右键 <code>Git Bash Here</code>，依次完成下列步骤。</p>
+<p>配置用户名及邮箱：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;xxx&quot;</span><br><span class="line">git config --global user.email &quot;email&quot;</span><br></pre></td></tr></table></figure>
+
+<p>生成 SSH 公钥：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;email&quot;</span><br></pre></td></tr></table></figure>
+
+<p>一路回车，将生成的 SSH 公钥，即用户目录下 <code>.ssh/id_rsa.pub</code> 中的内容复制，打开 <code>GitHub</code> -&gt; <code>Settings</code> -&gt; <code>SSH and GPG keys</code> -&gt; <code>New SSH key</code> 粘贴：</p>
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140114.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140114.png"></a></p>
+<p>验证是否配置成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292139730.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292139730.png"></a></p>
+<h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><p>在合适的位置新建一个文件夹（如 Blog）存放博客本地文件，<strong>以下所有操作均在此文件夹下进行</strong>。进入该文件夹右键 <code>Git Bash Here</code>，依次完成下列步骤。</p>
+<p>安装 Hexo：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+
+<p>验证是否安装成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
+
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292139224.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292139224.png"></a></p>
+<h3 id="初始化博客"><a href="#初始化博客" class="headerlink" title="初始化博客"></a>初始化博客</h3><p>在博客文件夹下右键 <code>Git Bash Here</code>，<code>hexo init</code> 初始化博客，<code>npm install</code> 安装必要组件，博客基本搭建完成。此时 <code>hexo g</code> 生成静态网页，<code>hexo s</code> 本地预览，打开浏览器访问 <code>localhost:4000</code> 即可预览博客，<code>ctrl + c</code> 退出。</p>
+<h3 id="博客部署配置"><a href="#博客部署配置" class="headerlink" title="博客部署配置"></a>博客部署配置</h3><p>打开站点配置文件，即博客根目录下的 <code>_config.yml</code> ，翻到最后修改部署配置内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: GitHub 仓库地址</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>右键 <code>Git Bash Here</code> 安装部署插件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>此时即可使用 <code>hexo d</code> 进行部署。</p>
+<h3 id="写作流程"><a href="#写作流程" class="headerlink" title="写作流程"></a>写作流程</h3><ol>
+<li><code>hexo n &quot;文章名字&quot;</code> 新建文章。</li>
+<li>在博客文件夹 <code>source/_posts</code> 目录下找到相应生成的 md 文件，使用 Markdown 语法完成文章的撰写。</li>
+<li><code>hexo g</code> 生成静态网页</li>
+<li><code>hexo s</code> 打开浏览器本地预览（非必须）</li>
+<li><code>hexo d</code> 部署</li>
+</ol>
+<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo n &quot;文章名字&quot;  # 新建博客文章</span><br><span class="line">hexo clean  # 清楚缓存文件和已生成的静态文件（更换主题后不生效时可运行该命令）</span><br><span class="line">hexo g  # 生成静态网页</span><br><span class="line">hexo s  # 本地预览</span><br><span class="line">hexo d  # 部署</span><br></pre></td></tr></table></figure>
+
+<p>强烈建议阅读 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo 中文文档</a></p>
+<h3 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h3><p>通过 <a target="_blank" rel="noopener" href="https://wanwang.aliyun.com/">阿里云</a> 或 <a target="_blank" rel="noopener" href="https://dnspod.cloud.tencent.com/">腾讯云</a> 购买域名，进入域名控制台，添加解析记录。<code>Win+R</code> 输入 <code>cmd</code> 打开命令提示符，输入<code>ping xxx.github.io</code>，记录 ip 后按下图填写两条解析记录。</p>
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140934.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140934.png"></a></p>
+<p>在本地博客文件夹的 source 文件夹下创建 CNAME 文件，<strong>注意：无后缀名</strong>，里面填写购买的域名，比如：xxx.com</p>
+<p>在博客 GitHub 仓库下 <code>Settings</code> -&gt; <code>GitHub Pages</code> -&gt; <code>Custom domain</code> 里填上购买的域名即可。</p>
+<h3 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h3><p><a target="_blank" rel="noopener" href="https://github.com/">GitHub</a> 搜索 <code>hexo theme</code> 或在 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">Hexo 主题</a> 中选择喜欢的主题并根据主题对应文档进行配置。个人推荐：<a target="_blank" rel="noopener" href="https://github.com/next-theme/hexo-theme-next">NexT</a> 和 <a target="_blank" rel="noopener" href="https://github.com/Siricee/hexo-theme-Chic">Chic</a></p>
+<h2 id="NexT-主题美化"><a href="#NexT-主题美化" class="headerlink" title="NexT 主题美化"></a>NexT 主题美化</h2><p><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/">NexT 文档</a></p>
+<h3 id="归档页面不分页"><a href="#归档页面不分页" class="headerlink" title="归档页面不分页"></a>归档页面不分页</h3><p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-generator-archive">hexo-generator-archive</a></p>
+<h3 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h3><p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-generator-index">hexo-generator-index</a></p>
+<h3 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h3><p><a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt">hexo-blog-encrypt</a></p>
+<h3 id="修改文章永久链接"><a href="#修改文章永久链接" class="headerlink" title="修改文章永久链接"></a>修改文章永久链接</h3><p><a target="_blank" rel="noopener" href="https://github.com/rozbo/hexo-abbrlink">hexo-abbrlink</a></p>
+<h3 id="添加评论系统-Waline"><a href="#添加评论系统-Waline" class="headerlink" title="添加评论系统 Waline"></a>添加评论系统 Waline</h3><p><a target="_blank" rel="noopener" href="https://waline.js.org/">Waline</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/walinejs/waline/tree/main/packages/hexo-next">Hexo NexT Waline</a></p>
+<h3 id="添加夜间模式切换"><a href="#添加夜间模式切换" class="headerlink" title="添加夜间模式切换"></a>添加夜间模式切换</h3><p><a target="_blank" rel="noopener" href="https://github.com/rqh656418510/hexo-next-darkmode">Hexo NexT Darkmode</a></p>
+<h3 id="字体修改"><a href="#字体修改" class="headerlink" title="字体修改"></a>字体修改</h3><p><a target="_blank" rel="noopener" href="https://io-oi.me/tech/noto-serif-sc-added-on-google-fonts/">Google Fonts 已支持思源宋体！</a></p>
+<p><a target="_blank" rel="noopener" href="https://guanqr.com/tech/website/web-font-guide/">网站字体优化方案</a></p>
+<h3 id="添加本文结束"><a href="#添加本文结束" class="headerlink" title="添加本文结束"></a>添加本文结束</h3><p>在主题配置文件 <code>_config.next.yml</code> 中取消注释：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  postBodyEnd: source/_data/post-body-end.njk</span><br></pre></td></tr></table></figure>
+<p>在 <code>source/_data/post-body-end.njk</code> 中添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &#123;% if not is_index %&#125;</span><br><span class="line">        &lt;div style=&quot;text-align:center;color: #ccc;font-size:16px;&quot;&gt;-------------　　　　本 文 结 束　&lt;i class=&quot;fa fa-flag&quot;&gt;&lt;/i&gt;　感 谢 阅 读　　　　-------------&lt;/div&gt;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改文章内超链接颜色"><a href="#修改文章内超链接颜色" class="headerlink" title="修改文章内超链接颜色"></a>修改文章内超链接颜色</h3><p>在主题配置文件 <code>_config.next.yml</code> 中取消注释：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
+<p>在 <code>source/_data/styles.styl</code> 中添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.post-body a[target][rel][href] &#123;</span><br><span class="line">    color: #0593d3;</span><br><span class="line">    border-bottom: none;</span><br><span class="line">    &amp;:hover &#123;</span><br><span class="line">        color: #fc6423;</span><br><span class="line">        text-decoration: underline;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改侧边栏背景及文字颜色"><a href="#修改侧边栏背景及文字颜色" class="headerlink" title="修改侧边栏背景及文字颜色"></a>修改侧边栏背景及文字颜色</h3><p>在主题配置文件 <code>_config.next.yml</code> 中取消注释：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
+<p>在 <code>source/_data/styles.styl</code> 中添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">.sidebar &#123;</span><br><span class="line">  background:url(https://...);	</span><br><span class="line">  background-size: cover;</span><br><span class="line">  background-position:center;</span><br><span class="line">  background-repeat:no-repeat;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  if (not hexo-config(&#x27;back2top.sidebar&#x27;)) &#123;</span><br><span class="line">    box-shadow: inset 0 2px 6px black;</span><br><span class="line">  &#125;</span><br><span class="line">  position: fixed;</span><br><span class="line">  top: 0;</span><br><span class="line">  transition: all $transition-ease-out;</span><br><span class="line">  width: $sidebar-desktop;</span><br><span class="line">  z-index: $zindex-2;</span><br><span class="line"></span><br><span class="line">  a &#123;</span><br><span class="line">	border-bottom-color: #FFFFFF;</span><br><span class="line">	color: #FFFFFF;</span><br><span class="line">    &amp;:hover &#123;</span><br><span class="line">	  border-bottom-color: $FFFFFF;</span><br><span class="line">	  color: #FFFFFF;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.sidebar-nav li &#123;</span><br><span class="line">    color: #FFFFFF;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Chic-主题美化"><a href="#Chic-主题美化" class="headerlink" title="Chic 主题美化"></a>Chic 主题美化</h2><p><a target="_blank" rel="noopener" href="https://github.com/Siricee/hexo-theme-Chic/blob/master/README-CN.md">Chic 文档</a></p>
+<h3 id="归档页面不分页-1"><a href="#归档页面不分页-1" class="headerlink" title="归档页面不分页"></a>归档页面不分页</h3><p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-generator-archive">hexo-generator-archive</a></p>
+<h3 id="文章加密-1"><a href="#文章加密-1" class="headerlink" title="文章加密"></a>文章加密</h3><p><a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt">hexo-blog-encrypt</a></p>
+<h3 id="修改文章永久链接-1"><a href="#修改文章永久链接-1" class="headerlink" title="修改文章永久链接"></a>修改文章永久链接</h3><p><a target="_blank" rel="noopener" href="https://github.com/rozbo/hexo-abbrlink">hexo-abbrlink</a></p>
+<h3 id="添加评论系统-Waline-1"><a href="#添加评论系统-Waline-1" class="headerlink" title="添加评论系统 Waline"></a>添加评论系统 Waline</h3><p><a target="_blank" rel="noopener" href="https://waline.js.org/">Waline</a></p>
+<p>在 <code>themes\Chic\layout\_plugins</code> 中新建 <code>waline.ejs</code> 文件，内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">  &lt;script src=&quot;https://unpkg.com/@waline/client@v2/dist/waline.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;link</span><br><span class="line">    rel=&quot;stylesheet&quot;</span><br><span class="line">    href=&quot;https://unpkg.com/@waline/client@v2/dist/waline.css&quot;</span><br><span class="line">  /&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">  &lt;div id=&quot;waline&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;script&gt;</span><br><span class="line">    Waline.init(&#123;</span><br><span class="line">      el: &#x27;#waline&#x27;,</span><br><span class="line">      serverURL: &#x27;https://your-domain.vercel.app 修改此处&#x27;,</span><br><span class="line">    &#125;);</span><br><span class="line">  &lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<p>在 <code>themes\Chic\layout\post.ejs</code> 文件中添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if (theme.waline.enable) &#123; %&gt;</span><br><span class="line">    &lt;div id=&quot;waline&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;%- partial(&#x27;_plugins/waline&#x27;) %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+<p>在主题 <code>_config.yml</code> 中添加配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">waline:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure>
+<p>如果需要在 page 页添加评论，类似的可以在 <code>themes\Chic\layout\page.ejs</code> 文件中添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if (theme.waline.enable) &#123; %&gt;</span><br><span class="line">    &lt;div id=&quot;waline&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;%- partial(&#x27;_plugins/waline&#x27;) %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字体修改-1"><a href="#字体修改-1" class="headerlink" title="字体修改"></a>字体修改</h3><p><a target="_blank" rel="noopener" href="https://io-oi.me/tech/noto-serif-sc-added-on-google-fonts/">Google Fonts 已支持思源宋体！</a></p>
+<p>在 <code>themes\Chic\layout\_partial\head.ejs</code> 中插入 Google Fonts 生成的代码并修改 <code>themes\Chic\source\css\font.styl</code> 文件中的 font-family</p>
+<h3 id="中文-自定义图标-不蒜子统计-博客年份-样式修改"><a href="#中文-自定义图标-不蒜子统计-博客年份-样式修改" class="headerlink" title="中文 &amp; 自定义图标 &amp; 不蒜子统计 &amp; 博客年份 &amp; 样式修改"></a>中文 &amp; 自定义图标 &amp; 不蒜子统计 &amp; 博客年份 &amp; 样式修改</h3><p><a target="_blank" rel="noopener" href="https://yuanlichenai.cn/2020/02/02/chic/#%E4%B8%BB%E9%A2%98%E5%AD%97%E4%BD%93">Chic 主题</a></p>
+<h3 id="标签云美化"><a href="#标签云美化" class="headerlink" title="标签云美化"></a>标签云美化</h3><p>在 <code>themes\Chic\source\js</code> 下新建 <code>codecopy.js</code>，添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$(function () &#123;</span><br><span class="line">    // tags 隨機大小 顔色</span><br><span class="line">    var list = document.querySelectorAll(&quot;.tag-cloud-tags a&quot;);</span><br><span class="line">    if ($(window).width() &gt; 768) &#123;</span><br><span class="line">        Array.prototype.forEach.call(list, (item, index) =&gt; &#123;</span><br><span class="line">            item.style.fontSize = Math.floor(Math.random() * 20 + 15) + &quot;px&quot;; //15 ~ 35</span><br><span class="line">            item.style.color =</span><br><span class="line">                &quot;rgb(&quot; +</span><br><span class="line">                Math.floor(Math.random() * 201) +</span><br><span class="line">                &quot;, &quot; +</span><br><span class="line">                Math.floor(Math.random() * 201) +</span><br><span class="line">                &quot;, &quot; +</span><br><span class="line">                Math.floor(Math.random() * 201) +</span><br><span class="line">                &quot;)&quot;; // 0,0,0 -&gt; 200,200,200</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Array.prototype.forEach.call(list, (item, index) =&gt; &#123;</span><br><span class="line">            item.style.fontSize = Math.floor(Math.random() * 13 + 15) + &quot;px&quot;; //15 ~ 28</span><br><span class="line">            item.style.color =</span><br><span class="line">                &quot;rgb(&quot; +</span><br><span class="line">                Math.floor(Math.random() * 201) +</span><br><span class="line">                &quot;, &quot; +</span><br><span class="line">                Math.floor(Math.random() * 201) +</span><br><span class="line">                &quot;, &quot; +</span><br><span class="line">                Math.floor(Math.random() * 201) +</span><br><span class="line">                &quot;)&quot;; // 0,0,0 -&gt; 200,200,200</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>在主题 <code>_config.yml</code> 中引入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scripts:</span><br><span class="line">  - https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js</span><br><span class="line">  - /js/codecopy.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="字数统计"><a href="#字数统计" class="headerlink" title="字数统计"></a>字数统计</h3><p><a target="_blank" rel="noopener" href="https://github.com/next-theme/hexo-word-counter">hexo-word-counter</a></p>
+<h3 id="Fancybox-查看图片"><a href="#Fancybox-查看图片" class="headerlink" title="Fancybox 查看图片"></a>Fancybox 查看图片</h3><p><a target="_blank" rel="noopener" href="https://vccv.cc/article/fancybox-cactus.html">cactus 使用上 fancybox 图片放大</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">GitHub + Hexo 搭建个人网站详细教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://godweiyang.com/2018/04/13/hexo-blog/">超详细 Hexo + GitHub 博客搭建小白教程</a></li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>本文作者:</span>
+                        <span>WzZH</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wangzihang.site/posts/dbd19b24.html">https://wangzihang.site/posts/dbd19b24.html</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>版权声明:</span>
+                        <span>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA-4.0</a> 许可协议。转载请注明出处。</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/GitHub/"><i class="iconfont icon-24gf-tags "></i> GitHub</a>
+                    
+                        <a href="/tags/Hexo/"><i class="iconfont icon-24gf-tags "></i> Hexo</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">首页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/posts/78e09c9c.html">Markdown 语法</a>
+            
+            
+            <a class="next" rel="next" href="/posts/4f2fecf.html">Hello World</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+
+    <div id="waline"></div>
+    <head>
+  <!-- ... -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+  />
+  <!-- ... -->
+</head>
+<body>
+  <!-- ... -->
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    init({
+      el: '#waline',
+      serverURL: 'https://comments.wangzihang.site/',
+      emoji: ['https://unpkg.com/@waline/emojis@1.1.0/weibo', 'https://unpkg.com/@waline/emojis@1.1.0/bilibili'],
+      dark: 'body.dark-theme',
+    });
+  </script>
+</body>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WzZH | 2021 - 2024
+            | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a><br>
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    <i class="iconfont icon-fangkeguanli "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_uv"></a>
+</span>
+
+
+<span class="site-pv">
+    <i class="iconfont icon-icon- "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_pv"></a>
+</span>
+
+            
+            
+                <span class="site-count">
+                 <i class="iconfont icon-file-word "></i>
+                    <a href="#">27k</a>
+                </span>
+            
+            
+                <span class="site-count">
+                <i class="iconfont icon-time "></i>
+                    <a href="#">45 分钟</a>
+                </span>
+            
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="default">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="WzZH">
+
+
+
+
+
+<title>Hello World | WzZH&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292140887.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    
+    <script src="/js/codecopy.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">WzZH&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">WzZH&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;浅色</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Hello World</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                            <i class="iconfont icon-calendar "></i>&nbsp;发表于: <a href="#">2021-09-10</a>
+                        </span>
+                    
+                    
+                        <span class="post-updated">
+                            <i class="iconfont icon-calendar-check-fill "></i>&nbsp;更新于: <a href="#">2022-12-29</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                            <i class="iconfont icon-folder "></i>&nbsp;分类于: 
+                            
+                                <a href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+                            
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-file-word "></i>&nbsp;总字数: 
+                            <a href="#">14</a>
+                        </span>
+                    
+                    
+                        <span class="post-count">
+                            <i class="iconfont icon-time "></i>&nbsp;约需要: 
+                            <a href="#">1 分钟</a>
+                        </span>
+                    
+                    
+                        <span class="post-view">
+                            <i class="iconfont icon-icon- "></i>&nbsp;浏览量: 
+                            <a class="busuanzi-value" id="busuanzi_value_page_pv"></a>
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>山高路远，看世界，也找自己。</p>
+<p><a data-fancybox="gallery" data-src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292148349.png" data-caption=""><img src="https://jihulab.com/Hide927/blogimages/-/raw/main/pictures/202210292148349.png"></a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>本文作者:</span>
+                        <span>WzZH</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wangzihang.site/posts/4f2fecf.html">https://wangzihang.site/posts/4f2fecf.html</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>版权声明:</span>
+                        <span>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA-4.0</a> 许可协议。转载请注明出处。</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">首页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/posts/dbd19b24.html">Hexo + GitHub Pages 博客搭建及美化</a>
+            
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+
+    <div id="waline"></div>
+    <head>
+  <!-- ... -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+  />
+  <!-- ... -->
+</head>
+<body>
+  <!-- ... -->
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    init({
+      el: '#waline',
+      serverURL: 'https://comments.wangzihang.site/',
+      emoji: ['https://unpkg.com/@waline/emojis@1.1.0/weibo', 'https://unpkg.com/@waline/emojis@1.1.0/bilibili'],
+      dark: 'body.dark-theme',
+    });
+  </script>
+</body>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© WzZH | 2021 - 2024
+            | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a><br>
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    <i class="iconfont icon-fangkeguanli "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_uv"></a>
+</span>
+
+
+<span class="site-pv">
+    <i class="iconfont icon-icon- "></i>
+    <a class="busuanzi-value" id="busuanzi_value_site_pv"></a>
+</span>
+
+            
+            
+                <span class="site-count">
+                 <i class="iconfont icon-file-word "></i>
+                    <a href="#">27k</a>
+                </span>
+            
+            
+                <span class="site-count">
+                <i class="iconfont icon-time "></i>
+                    <a href="#">45 分钟</a>
+                </span>
+            
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
